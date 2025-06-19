@@ -2,26 +2,30 @@
 
 <div class="container p-5">
 
-    <!-- 요청을 하면 localhost:8080/join POST로 요청됨
-    username=사용자입력값&password=사용자값&email=사용자입력값 -->
+    <!--
+        {{! boardList}} (머스태치 주석)
+        #boardList 리스트가 존재하고 비어있지 않으면 반복 실행
+    -->
 
-    <div class="card">
-        <div class="card-header"><b>회원가입을 해주세요</b></div>
+
+    {{#boardList}}
+    <div class="card mb-3">
         <div class="card-body">
-            <form action="/join" method="post" enctype="application/x-www-form-urlencoded">
-                <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Enter username" name="username">
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" placeholder="Enter password" name="password">
-                </div>
-                <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="Enter email" name="email">
-                </div>
-                <button type="submit" class="btn btn-primary form-control">회원가입</button>
-            </form>
+            <!-- {{! title }}은 현재 Board 객체의 title 멤버 변수에 값을 출력한다.
+                 머스태치는 자동으로 getTitle() 메서드를 호출 한 것이다.
+                -->
+            <h4 class="card-title mb-3">{{title}}</h4>
+            <p>{{Time}}</p>
+            <a href="/board/{{id}}" class="btn btn-primary">상세보기</a>
         </div>
     </div>
+    {{/boardList}}
+
+    <ul class="pagination d-flex justify-content-center">
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+
 </div>
 
 {{> layout/footer}}
