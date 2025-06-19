@@ -20,6 +20,21 @@ public class BoardNativeRepository {
     public BoardNativeRepository(EntityManager em) {
         this.em = em;
     }
+
+    public  Board findById(Long id) {
+        // where 조건절을 활용해서 단건에 데이터를 조회
+        String sqlStr = "select * from board_tb where id = ? ";
+        Query query = em.createNativeQuery(sqlStr,Board.class);
+        query.setParameter(1,id);
+        // SQL Injection 방지 - 파라미터 바인딩
+        // 직접 문자열을 연결하지 않고 ? 를 사용해서 안전하게 값 전달
+
+        // query.getSingleResult() -> 단일 결과만 반환하는 메서드
+        // 주의 : null 리턴된다면 예외 발생 --> try-catch 처리를 해야 한다.
+        // 주의 : 혹시 결과가 2개 행의 리턴이 된다면 예외가 발생하게 된다.
+        return (Board) query.getSingleResult();
+    }
+
     // 트랜잭션 처리
     @Transactional
     public void save(String title, String content, String username) {
