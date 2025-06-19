@@ -23,6 +23,34 @@ public class BoardController {
         this.boardNativeRepository = boardNativeRepository;
     }
 
+    @PostMapping("/board/{id}/update-form")
+    public String update(@PathVariable(name = "id") Long id,
+                             @RequestParam(name = "title") String title,
+                             @RequestParam(name = "content") String content,
+                             @RequestParam(name = "username") String username,
+                             HttpServletRequest request) {
+
+        boardNativeRepository.updateById(id,title,content,username);
+
+        // PRG 패턴 적용
+        // 수정 완료 후 해당 게시글 상세보기 페이지로 리다이렉트
+        // 게시글 상세보기 URL --> /board/{id}/update-form
+
+        return "redirect:/board/" + id;
+    }
+
+    // 게시글 수정 화면 요청 GET 방식
+    // /board/3/update-form
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable(name = "id") Long id,
+                             HttpServletRequest request) {
+
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board",board);
+
+        return "board/update-form";
+    }
+
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable(name = "id") Long id) {
         // 클라이언트 --> 삭제요청 처리 ---> 응답 : 리다이렉트 -- 클라이언트 --> / --> 응답
